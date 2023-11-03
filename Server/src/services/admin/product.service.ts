@@ -62,3 +62,30 @@ export const createMedia = async (mediaList: any, insertId: number) => {
     [insertId, mediaList[0], mediaList[1], mediaList[2], mediaList[3]]
   );
 };
+
+export const updateOrder = async (id: number) => {
+  return db.execute(
+    `UPDATE ecomglass.order_cart SET status = '1' WHERE (order_cart_id = ?)
+  `,
+    [id]
+  );
+};
+
+export const deleteQuantity = async (id: number) => {
+  return db.execute(
+    `UPDATE project_jbl.detail AS d
+  JOIN project_jbl.order AS o ON d.detailId = o.detailId
+  JOIN project_jbl.order_cart AS oc ON o.order_cart_id = oc.order_cart_id
+  SET d.quantity = d.quantity - o.numberBuy
+  WHERE o.detailId = ?`,
+    [id]
+  );
+};
+
+export const deleteOne = async (id: number) => {
+  return db.execute(
+    `DELETE FROM project_jbl.glasses WHERE (glassId = ?)
+  `,
+    [id]
+  );
+};
